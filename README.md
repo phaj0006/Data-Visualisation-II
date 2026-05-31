@@ -2,7 +2,8 @@
 A 11 chart presentation on Tourism in Australia
 
 This is made by Peter Hajduk on 31/05/2026.
-To run this project, simply run the index.html file whilst keeping all the other files in the same structure.
+
+To run this project, simply run the index.html file in a live server on Visual Studio Code while having all the files in the same structure.
 
 This visualisation uses the following datasets for the information:
 
