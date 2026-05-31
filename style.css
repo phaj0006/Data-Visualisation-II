@@ -1,0 +1,43 @@
+@font-face {
+    font-family: "Frutiger";
+    src: url("Font/Frutiger.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Frutiger Bold";
+    src: url("Font/Frutiger Bold.woff") format("woff");
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* Page background */
+body {
+    margin: 0;
+    padding: 0;
+    background: #f5f5f5;
+    font-family: Frutiger, Arial, Helvetica, sans-serif;
+}
+
+/* Main 900px dashboard container */
+.container {
+    width: 100px;
+    padding: 0px;
+}
+
+/* Main title */
+h1 {
+    text-align: center;
+    margin: 0 0 20px 0;
+    font-size: 48px;
+    font-family: "Frutiger Bold", Frutiger, Arial, Helvetica, sans-serif;
+    line-height: 1.1;
+}
+
+/* Vega wrapper */
+#vis {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+}

@@ -1,0 +1,1334 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+
+  "background": "white",
+
+  "spacing": 40,
+
+  "vconcat": [
+{
+  "width":900,
+  "data": {
+    "values": [
+      { "text": "Tourism in Australia" }
+    ]
+  },
+
+  "mark": {
+    "type": "text",
+    "fontSize": 48,
+    "fontWeight": "bold",
+    "align": "center",
+    "color": "#000000"
+  },
+
+  "encoding": {
+    "text": { "field": "text" }
+  }
+},
+{
+  "height": 40,
+
+  "data": {
+    "values": [
+      {
+        "text": [
+          "Australian tourism makes up a 213.6 billion dollar industry, with a majority of its revenue from tourism in Victoria and ",
+          "New South Wales. Combined, Victoria and New South Wales account for 60% of all Tourism business establishments",
+          "in Australia. In this visualisation, the inner workings of the tourism business in Australia is displayed,",
+          " involving the main companies in the space and how they compare to each other in revenue and market share ",
+          "as well as how these companies make their money and the value provided by employees in the industry. ",
+          "Then, a brief analysis of related fields such as hotels and resorts and inbound tour operators and",
+          "how these related fields compare to tourism in Australia"
+        ]
+      }
+    ]
+  },
+
+  "mark": {
+    "type": "text",
+    "font": "Frutiger",
+    "fontSize": 18,
+    "fontWeight": 300,
+    "align": "left",
+    "color": "#333333"
+  },
+
+  "encoding": {
+    "text": { "field": "text" }
+  }
+},
+    {
+  "width": 900,
+  "height": 500,
+
+  "data": {
+    "url": "states.geojson"
+  },
+
+  "mark": "geoshape",
+
+  "encoding": {
+    "tooltip": [
+      { "field": "STATE_NAME" },
+      { "field": "id" }
+    ]
+  }
+},
+
+    {
+  "hconcat": [
+
+    {
+      "title": "Tourism Market Share Rankings (2020-2026)",
+
+      "width": 425,
+      "height": 500,
+
+      "layer": [
+        {
+          "data": {
+            "url": "data/X0003 Tourism in Australia Industry Report/Market Share History.csv"
+          },
+          "transform": [
+            {
+              "fold": [
+                "Qantas",
+                "Virgin Australia Holdings",
+                "Crown Resorts",
+                "Flight Centre Travel",
+                "Accor Asia Pacific"
+              ],
+              "as": ["Company", "MarketShare"]
+            },
+            {
+              "calculate": "toNumber(datum.MarketShare)",
+              "as": "MarketShareNum"
+            },
+            {
+              "window": [
+                {
+                  "op": "rank",
+                  "as": "Rank"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "MarketShareNum",
+                  "order": "descending"
+                }
+              ],
+              "groupby": ["Year"]
+            }
+          ],
+
+          "mark": {
+            "type": "line",
+            "point": true
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+
+            "y": {
+              "field": "Rank",
+              "type": "ordinal",
+              "sort": "descending"
+            },
+
+            "color": {
+              "field": "Company",
+              "type": "nominal"
+            },
+
+            "detail": {
+              "field": "Company"
+            },
+
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "Company" },
+              { "field": "MarketShare" },
+              { "field": "Rank" }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "values": [
+              {
+                "Year": "2022",
+                "Rank": 1,
+                "Label": "Qantas remains the market leader, peaking at 10.21% in 2026"
+              }
+            ]
+          },
+
+          "mark": {
+            "type": "text",
+            "dx": 40,
+            "dy": -10,
+            "fontSize": 12,
+            "fontWeight": "bold"
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+
+            "y": {
+              "field": "Rank",
+              "type": "ordinal"
+            },
+
+            "text": {
+              "field": "Label"
+            }
+          }
+        },
+
+        {
+          "data": {
+            "values": [
+              {
+                "Year": "2022",
+                "Rank": 4,
+                "Label": "The other rankings stabilise to their final positions in 2022"
+              }
+            ]
+          },
+
+          "mark": {
+            "type": "text",
+            "dx": 40,
+            "dy": -10,
+            "fontSize": 12,
+            "fontWeight": "bold"
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+
+            "y": {
+              "field": "Rank",
+              "type": "ordinal"
+            },
+
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+      ]
+    },
+
+    {
+  "title": "Company Market Share vs Revenue (2026)",
+
+  "width": 425,
+  "height": 500,
+
+  "layer": [
+
+    {
+      "data": {
+        "url": "data/X0003 Tourism in Australia Industry Report/Companies.csv"
+      },
+
+      "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 250
+      },
+
+      "encoding": {
+        "x": {
+          "field": "Market Share (%)2026",
+          "type": "quantitative",
+          "title": "Company Market Share (%)"
+        },
+
+        "y": {
+          "field": "Revenue ($m)2026",
+          "type": "quantitative",
+          "title": "Revenue ($ million)"
+        },
+
+        "tooltip": [
+          { "field": "Company" },
+          { "field": "Market Share (%)2026" },
+          { "field": "Revenue ($m)2026" }
+        ]
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          {
+            "Market Share (%)2026": 4,
+            "Revenue ($m)2026": 21000,
+            "Label": [
+              "This has led to a staggering 21.4 billion dollars of revenue for Qantas.",
+              "This is 3.7x the revenue of its closest competitor, Virgin Australia."
+            ]
+            }
+        ]
+      },
+
+      "mark": {
+        "type": "text",
+        "dx": 40,
+        "dy": -10,
+        "fontSize": 12,
+        "fontWeight": "bold"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "Market Share (%)2026",
+          "type": "quantitative"
+        },
+
+        "y": {
+          "field": "Revenue ($m)2026",
+          "type": "quantitative"
+        },
+
+        "text": {
+          "field": "Label"
+        }
+      }
+    }
+  ]
+}
+  ]
+},
+
+{
+  "title": "Revenue Per Employee vs Average Wage",
+
+  "width": 900,
+  "height": 500,
+
+  "data": {
+    "url": "data/X0003 Tourism in Australia Industry Report/Key Ratios.csv"
+  },
+
+  "transform": [
+    {
+      "fold": [
+        "Revenue per Employee($)",
+        "Average Wage($)"
+      ],
+      "as": ["Metric", "Value"]
+    }
+  ],
+
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "point": true
+      },
+
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "Value",
+          "type": "quantitative",
+          "title": "Amount of Money ($)"
+        },
+
+        "color": {
+          "field": "Metric",
+          "type": "nominal"
+        },
+
+        "tooltip": [
+          { "field": "Year" },
+          { "field": "Metric" },
+          { "field": "Value" }
+        ]
+      }
+    },
+
+    {
+  "data": {
+    "values": [
+      {
+        "label": [
+          "Interestingly, despite producing $300,000 of value,",
+          "employees only make on average $50,000-$60,000 per year.",
+          "This is 5-6x less than the value they produce."
+        ]
+      }
+    ]
+  },
+
+  "mark": {
+    "type": "text",
+    "fontSize": 14,
+    "fontWeight": "bold",
+    "font": "Frutiger",
+    "color": "#666666",
+    "align": "center",
+    "baseline": "middle",
+    "dx": 0,
+    "dy": 0
+  },
+
+  "encoding": {
+    "text": { "field": "label" },
+
+    "x": { "value": 450 },
+    "y": { "value": 250 }
+  }
+}
+  ]
+},
+
+{
+  "title": "Revenue Distribution",
+
+  "width": 900,
+  "height": 500,
+
+  "data": {
+    "url": "data/X0003 Tourism in Australia Industry Report/Products And Services.csv"
+  },
+
+  "transform": [
+    {
+      "calculate": "datum.Revenue / 1000000",
+      "as": "RevenueMillions"
+    }
+  ],
+
+  "layer": [
+    {
+      "mark": {
+        "type": "bar"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "Segment",
+          "type": "nominal",
+          "sort": "-y",
+          "title": null
+        },
+
+        "y": {
+          "field": "RevenueMillions",
+          "type": "quantitative",
+          "title": "Revenue ($ million)"
+        },
+
+        "tooltip": [
+          { "field": "Segment" },
+          {
+            "field": "RevenueMillions",
+            "title": "Revenue ($ million)",
+            "format": ",.2f"
+          }
+        ]
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          {
+            "label": [
+              "Tourism gains a majority of its revenue from Transport, Retailing and Accommendation.",
+              "This makes up 70.8% of all revenue generated by Australia tourism businesses"
+            ]
+          }
+        ]
+      },
+
+      "mark": {
+        "type": "text",
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "font": "Frutiger",
+        "color": "#666666",
+        "align": "right",
+        "baseline": "top"
+      },
+
+      "encoding": {
+        "text": { "field": "label" },
+
+        "x": { "value": 880 },
+        "y": { "value": 10 }
+      }
+    }
+  ]
+},
+{
+  "width":900,
+  "data": {
+    "values": [
+      { "text": "Hotels and Resorts" }
+    ]
+  },
+
+  "mark": {
+    "type": "text",
+    "fontSize": 30,
+    "fontWeight": "bold",
+    "align": "center",
+    "color": "#000000"
+  },
+
+  "encoding": {
+    "text": { "field": "text" }
+  }
+},
+{
+  "hconcat": [
+
+    {
+      "title": "Market Share Ranking (2021-2026)",
+
+      "width": 425,
+      "height": 500,
+
+      "layer": [
+
+        {
+          "data": {
+            "url": "data/H4401 Hotels and Resorts in Australia Industry Report/Market Share History.csv"
+          },
+
+          "transform": [
+            {
+              "filter": "datum.Year >= 2021"
+            },
+
+            {
+              "fold": [
+                "Accor Asia Pacific",
+                "EVT",
+                "Hilton International Australia",
+                "Marriott International Management Company BV",
+                "Holiday Inns Holdings (Australia)"
+              ],
+              "as": ["Company", "MarketShare"]
+            },
+
+            {
+              "calculate": "toNumber(datum.MarketShare)",
+              "as": "MarketShareNum"
+            },
+
+            {
+              "window": [
+                {
+                  "op": "rank",
+                  "as": "Rank"
+                }
+              ],
+              "sort": [
+                {
+                  "field": "MarketShareNum",
+                  "order": "descending"
+                }
+              ],
+              "groupby": ["Year"]
+            }
+          ],
+
+          "mark": {
+            "type": "line",
+            "point": true
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+
+            "y": {
+              "field": "Rank",
+              "type": "ordinal",
+              "sort": "descending"
+            },
+
+            "color": {
+              "field": "Company",
+              "type": "nominal"
+            },
+
+            "detail": {
+              "field": "Company"
+            },
+
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "Company" },
+              { "field": "MarketShareNum", "title": "Market Share (%)" },
+              { "field": "Rank" }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "values": [
+              {
+                "Year": "2023",
+                "Rank": 1,
+                "Label": [
+                  "Accor Asia dominates the market with #1 for 7 years"
+                ]
+              }
+            ]
+          },
+
+          "mark": {
+            "type": "text",
+            "dx": 50,
+            "dy": -10,
+            "fontSize": 12,
+            "fontWeight": "bold"
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+
+            "y": {
+              "field": "Rank",
+              "type": "ordinal"
+            },
+
+            "text": {
+              "field": "Label"
+            }
+          }
+        },
+        {
+  "data": {
+    "values": [
+      {
+        "Year": "2023",
+        "Rank": 3,
+        "Label": [
+          "Hilton and Marriott have the exact same",
+          "market share in 2026 showing a fierce battle",
+          "between these companies"
+        ]
+      }
+    ]
+  },
+
+  "mark": {
+    "type": "text",
+    "dx": 50,
+    "dy": 15,
+    "fontSize": 12,
+    "fontWeight": "bold"
+  },
+
+  "encoding": {
+    "x": {
+      "field": "Year",
+      "type": "ordinal"
+    },
+
+    "y": {
+      "field": "Rank",
+      "type": "ordinal"
+    },
+
+    "text": {
+      "field": "Label"
+    }
+  }
+}
+
+      ]
+    },
+
+    {
+      "title": "Revenue by Segment",
+
+      "width": 425,
+      "height": 500,
+
+      "layer": [
+
+        {
+          "data": {
+            "url": "Data/H4401 Hotels and Resorts in Australia Industry Report/MajorMarkets.csv"
+          },
+
+          "transform": [
+            {
+              "calculate": "datum.Revenue / 1000000",
+              "as": "RevenueMillions"
+            }
+          ],
+
+          "mark": {
+            "type": "bar"
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Segment",
+              "type": "nominal",
+              "title": "Segment"
+            },
+
+            "y": {
+              "field": "RevenueMillions",
+              "type": "quantitative",
+              "title": "Revenue ($M)"
+            },
+
+            "color": {
+              "field": "Segment",
+              "type": "nominal"
+            },
+
+            "tooltip": [
+              {
+                "field": "Segment"
+              },
+              {
+                "field": "RevenueMillions",
+                "title": "Revenue ($M)",
+                "format": ",.2f"
+              }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "values": [
+              {
+                "Segment": "International leisure tourists",
+                "RevenueMillions": 5000,
+                "Label": [
+                  "Tourism both ",
+                  "domestically",
+                  "and internationally",
+                  "to Australia",
+                  "account for",
+                  "70.1% of the",
+                  "market for",
+                  "hotels and ",
+                  "resorts with",
+                  "10.3 billion",
+                  "dollars total"
+                ]
+              }
+            ]
+          },
+
+          "mark": {
+            "type": "text",
+            "dx": 120,
+            "dy": -20,
+            "fontSize": 12,
+            "fontWeight": "bold"
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Segment",
+              "type": "nominal"
+            },
+
+            "y": {
+              "field": "RevenueMillions",
+              "type": "quantitative"
+            },
+
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+
+      ]
+    }
+
+  ]
+},
+{
+  "width":900,
+  "data": {
+    "values": [
+      { "text": "Inbound Tour Operators" }
+    ]
+  },
+
+  "mark": {
+    "type": "text",
+    "fontSize": 30,
+    "fontWeight": "bold",
+    "align": "center",
+    "color": "#000000"
+  },
+
+  "encoding": {
+    "text": { "field": "text" }
+  }
+},
+{
+  "hconcat": [
+    {
+      "title": "Business Market Share (2026)",
+
+      "width": 425,
+      "height": 500,
+
+      "data": {
+        "url": "Data/OD5397 Inbound Tour Operators in Australia Industry Report/Companies.csv"
+      },
+
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "sum",
+              "field": "Market Share (%)2026",
+              "as": "MarketShare"
+            }
+          ],
+          "groupby": ["Company"]
+        },
+
+        {
+          "joinaggregate": [
+            {
+              "op": "sum",
+              "field": "MarketShare",
+              "as": "TotalShare"
+            }
+          ]
+        },
+
+        {
+          "calculate": "datum.MarketShare / datum.TotalShare",
+          "as": "Percent"
+        }
+      ],
+
+      "layer": [
+        {
+          "mark": {
+            "type": "arc",
+            "innerRadius": 120
+          },
+
+          "encoding": {
+            "theta": { "field": "MarketShare", "type": "quantitative" },
+            "color": { "field": "Company", "type": "nominal" },
+
+            "tooltip": [
+              { "field": "Company" },
+              { "field": "MarketShare", "title": "Market Share" },
+              {
+                "field": "Percent",
+                "type": "quantitative",
+                "format": ".1%"
+              }
+            ]
+          }
+        },
+
+        {
+          "mark": {
+            "type": "text",
+            "fontSize": 12,
+            "fontWeight": "bold",
+            "align": "center",
+            "baseline": "middle"
+          },
+
+          "encoding": {
+            "text": {
+              "value": [
+                "Out of the 10.4% combined market share,",
+                "Hello World has 7x the market share",
+                "at 9.1% compared to Across Australia's",
+                "1.3% market share"
+              ]
+            }
+          }
+        }
+      ]
+    },
+
+    {
+  "title": "Industry Revenue Over Time",
+
+  "width": 425,
+  "height": 500,
+
+  "layer": [
+
+    {
+      "data": {
+        "url": "Data/OD5397 Inbound Tour Operators in Australia Industry Report/Industry Data.csv"
+      },
+
+      "transform": [
+        {
+          "calculate": "toNumber(datum['Revenue($ Million)'])",
+          "as": "RevenueMillion"
+        }
+      ],
+
+      "mark": {
+        "type": "area",
+        "line": true,
+        "opacity": 0.6
+      },
+
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal",
+          "title": "Year"
+        },
+
+        "y": {
+          "field": "RevenueMillion",
+          "type": "quantitative",
+          "title": "Revenue ($ Million)"
+        },
+
+        "tooltip": [
+          {
+            "field": "Year"
+          },
+          {
+            "field": "RevenueMillion",
+            "title": "Revenue ($M)"
+          }
+        ]
+      }
+    },
+
+    {
+      "data": {
+        "values": [
+          {
+            "Year": "2020-21",
+            "RevenueMillion": 800,
+            "Label": [
+              "COVID-19 travel restrictions",
+              "caused a significant decline",
+              "in inbound tourism revenue,",
+              "which sharply recovered in 2023",
+              "where restrictions are lifted"
+            ]
+          }
+        ]
+      },
+
+      "mark": {
+        "type": "text",
+        "dx": 60,
+        "dy": -20,
+        "fontSize": 12,
+        "fontWeight": "bold"
+      },
+
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "ordinal"
+        },
+
+        "y": {
+          "field": "RevenueMillion",
+          "type": "quantitative"
+        },
+
+        "text": {
+          "field": "Label"
+        }
+      }
+    }
+
+  ]
+}
+  ]
+},
+{
+  "width":900,
+  "data": {
+    "values": [
+      { "text": "How Tourism compares to these related fields" }
+    ]
+  },
+
+  "mark": {
+    "type": "text",
+    "fontSize": 30,
+    "fontWeight": "bold",
+    "align": "center",
+    "color": "#000000"
+  },
+
+  "encoding": {
+    "text": { "field": "text" }
+  }
+},
+   {
+  "hconcat": [
+
+    {
+      "title": "Revenue Trends (All Tourism Industries)",
+
+      "width": 450,
+      "height": 450,
+
+      "layer": [
+
+        {
+          "data": {
+            "url": "Data/X0003 Tourism in Australia Industry Report/Industry Data.csv"
+          },
+
+          "mark": {
+            "type": "line",
+            "point": true
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+            "y": {
+              "field": "Revenue($ Million)",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "#1f77b4"
+            },
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "Revenue($ Million)" }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "url": "Data/H4401 Hotels and Resorts in Australia Industry Report/Industry Data.csv"
+          },
+
+          "mark": {
+            "type": "line",
+            "point": true
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+            "y": {
+              "field": "Revenue($ Million)",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "#ff7f0e"
+            },
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "Revenue($ Million)" }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "url": "Data/OD5397 Inbound Tour Operators in Australia Industry Report/Industry Data.csv"
+          },
+
+          "mark": {
+            "type": "line",
+            "point": true
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+            "y": {
+              "field": "Revenue($ Million)",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "#2ca02c"
+            },
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "Revenue($ Million)" }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "values": [
+              {
+                "Year": "2018",
+                "Revenue": 80000,
+                "Label": [
+                  "Australian Tourism outcompetes their related industries,",
+                  "with the industry earning more than both inbound tour operators",
+                  "and hotels and resorts combined. Unsurprisingly, all industries",
+                  "experienced a decline in revenue during 2020-2022 due to COVID",
+                  "restrictions."
+                ]
+              }
+            ]
+          },
+
+          "mark": {
+            "type": "text",
+            "dx": 60,
+            "dy": -20,
+            "fontSize": 12,
+            "fontWeight": "bold"
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+
+            "y": {
+              "field": "Revenue",
+              "type": "quantitative"
+            },
+
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+
+      ]
+    },
+
+    {
+      "title": "Employment Trends (All Tourism Industries)",
+
+      "width": 450,
+      "height": 450,
+
+      "layer": [
+
+        {
+          "data": {
+            "url": "Data/X0003 Tourism in Australia Industry Report/Industry Data.csv"
+          },
+
+          "mark": {
+            "type": "line",
+            "point": true
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+            "y": {
+              "field": "Employment(Units)",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "#1f77b4"
+            },
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "Employment(Units)" }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "url": "Data/H4401 Hotels and Resorts in Australia Industry Report/Industry Data.csv"
+          },
+
+          "mark": {
+            "type": "line",
+            "point": true
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+            "y": {
+              "field": "Employment(Units)",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "#ff7f0e"
+            },
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "Employment(Units)" }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "url": "Data/OD5397 Inbound Tour Operators in Australia Industry Report/Industry Data.csv"
+          },
+
+          "mark": {
+            "type": "line",
+            "point": true
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+            "y": {
+              "field": "Employment(Units)",
+              "type": "quantitative"
+            },
+            "color": {
+              "value": "#2ca02c"
+            },
+            "tooltip": [
+              { "field": "Year" },
+              { "field": "Employment(Units)" }
+            ]
+          }
+        },
+
+        {
+          "data": {
+            "values": [
+              {
+                "Year": "2019",
+                "Employment": 300000,
+                "Label": [
+                  "Naturally, this means that the Australian Tourism business",
+                  "has more employees than both fields, with it also having ",
+                  "more employees than both of them combined. Due to decreased",
+                  "revenue, employee numbers also dropped during 2020-2022."
+                ]
+              }
+            ]
+          },
+
+          "mark": {
+            "type": "text",
+            "dx": 60,
+            "dy": -20,
+            "fontSize": 12,
+            "fontWeight": "bold"
+          },
+
+          "encoding": {
+            "x": {
+              "field": "Year",
+              "type": "ordinal"
+            },
+
+            "y": {
+              "field": "Employment",
+              "type": "quantitative"
+            },
+
+            "text": {
+              "field": "Label"
+            }
+          }
+        }
+
+      ]
+    }
+
+  ]
+}
+      
+    
+  ],
+
+  "config": {
+  "view": {
+    "stroke": null
+  },
+
+  "title": {
+    "font": "Frutiger",
+    "fontWeight": "bold",
+    "color": "#000000",
+    "fontSize": 22,
+    "anchor": "middle"
+  },
+
+  "axis": {
+    "labelFont": "Frutiger",
+    "labelFontWeight": 300,
+    "titleFont": "Frutiger",
+
+    "labelColor": "#666666",
+    "titleColor": "#222222",
+
+    "tickColor": "#CCCCCC",
+    "domainColor": "#CCCCCC",
+    "gridColor": "#E6E6E6",
+    "labelFontSize": 14
+  },
+
+  "legend": {
+    "labelFont": "Frutiger",
+    "labelFontWeight": 200,
+    "titleFont": "Frutiger",
+
+    "labelColor": "#666666",
+    "titleColor": "#222222",
+    "labelFontSize": 15
+  },
+
+  "text": {
+    "font": "Frutiger",
+    "color": "#333333",
+    "fontWeight": 300
+  }
+}
+}
